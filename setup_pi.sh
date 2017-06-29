@@ -71,9 +71,11 @@ echo "Generating conf files for apache..."
 sudo cp apache.conf /etc/apache2/sites-available/pi.conf
 sudo a2ensite pi.conf
 sudo service apache2 reload
+sudo systemctl daemon-reload
 sudo a2dissite 000-default.conf
 sudo service apache2 restart
 sudo service apache2 reload
+sudo systemctl daemon-reload
 echo "Done."
 
 # Install requirements through pip
