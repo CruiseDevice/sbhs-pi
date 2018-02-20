@@ -59,13 +59,13 @@ class Command(BaseCommand):
 			write_to_sbhs(value['board'].boardcon,253,0)
 			write_to_sbhs(value['board'].boardcon,254,50)
 
-		time.sleep(40)
+		time.sleep(1)
 
 		for key,value in current_connections.iteritems():
 			second_reading[key] = read_from_sbhs(value['board'].boardcon,255)
 			write_to_sbhs(value['board'].boardcon,253,100)
 
-		time.sleep(40)
+		time.sleep(1)
 
 		for key,value in current_connections.iteritems():
 			final_reading[key] = read_from_sbhs(value['board'].boardcon,255)
@@ -93,15 +93,15 @@ class Command(BaseCommand):
 		for key in current_connections:
 			if delta1[key] > MINIMUM_DELTA and delta2[key] < -MINIMUM_DELTA:
 				pass
-			elif delta1[key] > MINIMUM_DELTA and delta2[key] > MINIMUM_DELTA:
+			#elif delta1[key] > MINIMUM_DELTA and delta2[key] > MINIMUM_DELTA:
 				#fans not working
-				faulty_boards[key]="Probably Fan is not working"
-			elif delta1[key] < MINIMUM_DELTA and delta2[key] < -MINIMUM_DELTA:
+				#faulty_boards[key]="Probably Fan is not working"
+			#elif delta1[key] < MINIMUM_DELTA and delta2[key] < -MINIMUM_DELTA:
 				#heaters not working
-				faulty_boards[key]="Probably Heater is not working"
-			else:
+			#	faulty_boards[key]="Probably Heater is not working"
+			#else:
 				#sensors not working
-				faulty_boards[key]="Probably Sensor is not working"
+			#	faulty_boards[key]="Probably Sensor is not working"
 
 		for o in current_onlines:
 			try:
@@ -112,8 +112,8 @@ class Command(BaseCommand):
 		new_offlines = []
 		for p in previous_onlines:
 			if p not in current_onlines:
-				new_offlines.append(p)
-
+				#new_offlines.append(p)
+				pass
 
 		server_report = json.dumps({"new_offlines": new_offlines, "faulty_boards": faulty_boards}, indent=2, separators=(',',':'))
 		with open(CRON_LOG_FILE, "w") as report_handler:

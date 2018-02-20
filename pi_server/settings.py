@@ -162,6 +162,7 @@ with open(os.path.join(BASE_DIR, 'map_machine_ids.txt')) as f:
     for line in f:
         try:
             data = line.split("=")
+	    print 'data',data
             brd = sbhs.Sbhs()
             b = brd.connect(int(data[0]))
             assert b == True
@@ -174,6 +175,9 @@ with open(os.path.join(BASE_DIR, 'map_machine_ids.txt')) as f:
             pass
 
 online_mids = [int(i) for i in boards.keys()]
+
+print 'boards',boards
+print 'MID_PORT_MAP',MID_PORT_MAP
 
 print "No of machines online : ", len(online_mids)
 

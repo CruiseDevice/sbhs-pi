@@ -1,3 +1,4 @@
+
 import serial
 import os
 from time import localtime, strftime, sleep
@@ -32,6 +33,7 @@ class Sbhs:
         # check for valid machine id number
         try:
             self.machine_id = int(machine_id)
+	    print 'self.machine_id',self.machine_id
         except:
             #with open('error.txt', 'w') as errrr:
              #   errrr.write('Invalid machine id specified % d' % self.machine_id)
@@ -40,6 +42,7 @@ class Sbhs:
         # get the usb device file from the machine map file
         try:
             map_file = open(MAP_FILE, 'r')
+            print 'map_file',map_file
             usb_device_file = False
             for mapping_str in map_file.readlines():
                 mapping = mapping_str.split('=')
@@ -81,6 +84,8 @@ class Sbhs:
     def connect_device(self, device_num):
         """ Open a serial connection via USB to the SBHS using USB Device Number"""
         # check for valid device number
+        #self.boardcon.close()
+	print 'check for valid device number'
         try:
             self.device_num = int(device_num)
         except:
@@ -89,15 +94,20 @@ class Sbhs:
 
         usb_device_file = '/dev/ttyUSB%d' % self.device_num
         # check if SBHS device is connected
+	print 'check if sbhs is connected'
         if not os.path.exists(usb_device_file):
             print 'SBHS device file ' + usb_device_file + ' does not exists'
             self.log('SBHS device file ' + usb_device_file + ' does not exists', 'ERROR')
             return False
+	print 'done checking if sbhs is connected'
         try:
             self.boardcon = serial.Serial(port=usb_device_file, baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=2) # org stopbits = 1
+            #print 'self.boardcon', self.boardcon
             self.machine_id = self.getMachineId()
+	    #print 'self.machine_id'.self.machine_id
             if self.machine_id != -1:
                 return True
+                #self.boardcon.close()
             else:
                 print "Machine %s not responding. Check SBHS device!!" % usb_device_file
         except:
@@ -164,7 +174,7 @@ class Sbhs:
     def disconnect(self):
         """ Reset the board fan and heat values and close the USB connection """
         try:
-            self.boardcon.close()
+            #self.boardcon.close()
             self.boardcon = False
             self.status = 0
             return True
